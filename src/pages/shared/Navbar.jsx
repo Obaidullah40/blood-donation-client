@@ -1,13 +1,15 @@
 import { Link, NavLink } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
+import { signOut } from "firebase/auth";
 
 const Navbar = () => {
-    const { user, logout } = useAuth();
+    const { user,auth, setLoading } = useAuth();
 
     const handleLogout = () => {
-        logout()
+        signOut(auth)
             .then(() => {
+                setLoading(true);
                 Swal.fire("Logged out", "success");
             })
             .catch(console.error);

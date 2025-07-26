@@ -114,11 +114,13 @@ const Register = () => {
                         {/* Password */}
                         <label className="label">Password</label>
                         <input
-                            type="password"
+                            type="passwordt"
                             {...register('password', { required: true, minLength: 6 })}
                             className="input input-bordered w-full"
                             placeholder="Password"
                         />
+                        
+                        
                         {errors.password?.type === 'required' && <p className='text-red-500'>Password is required</p>}
                         {errors.password?.type === 'minLength' && <p className='text-red-500'>Password must be at least 6 characters</p>}
 

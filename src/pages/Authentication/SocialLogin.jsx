@@ -23,8 +23,15 @@ const SocialLogin = () => {
                     last_log_in: new Date().toISOString()
                 }
 
-                const res = await axiosInstance.post('/users', userInfo);
-                console.log('user update info', res.data)
+                try {
+                    await axiosInstance.post('/users', userInfo);
+                } catch (err) {
+                    if (err.response?.status === 409) {
+                        console.log("User already exists in DB");
+                    } else {
+                        console.error("Failed to save user:", err);
+                    }
+                }
 
                 navigate(from);
             })
