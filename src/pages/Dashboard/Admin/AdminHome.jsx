@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import useAxios from "../../hooks/useAxios";
 import { FaUserFriends, FaHandHoldingUsd, FaTint } from "react-icons/fa";
+import useAxios from "../../../hooks/useAxios";
 
 const AdminHome = () => {
   const axios = useAxios();

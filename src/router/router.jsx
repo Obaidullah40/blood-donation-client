@@ -10,53 +10,66 @@ import DashboardHome from "../pages/Dashboard/DashboardHome";
 import UserProfile from "../pages/Dashboard/UserProfile";
 import MyDonationRequests from "../pages/Dashboard/MyDonationRequests";
 import CreateDonationRequest from "../pages/Dashboard/CreateDonationRequest";
+import AllUsers from "../pages/Dashboard/Admin/AllUsers";
+import AdminRoute from "../routers/AdminRoute";
+import AllDonationRequests from "../pages/Dashboard/Admin/AllDonationRequests";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        Component: RootLayout
-,
-        children: [
-            {
-                index: true,
-                Component: Home
-            }
-        ]
-    },
-    {
-        path: '/',
-        Component: AuthLayout,
-        children: [
-            {
-                path: 'login',
-                Component: Login
-            },
-            {
-                path: 'register',
-                Component: Register
-            }
-        ]
-    },
-    {
-  path: "/dashboard",
-  element: <PrivateRoute><DashboardLayout /></PrivateRoute>, // if protected
-  children: [
-    {   index: true, 
-        element: <DashboardHome /> },
-    {
-      path: "create-donation-request",
-      element: <CreateDonationRequest />
-    },
-    {
-      path: "my-donation-requests",
-      element: <MyDonationRequests />
-    },
-    {
-      path: "profile",
-      element: <UserProfile />
-    },
-  ],
-},
+  {
+    path: "/",
+    Component: RootLayout
+    ,
+    children: [
+      {
+        index: true,
+        Component: Home
+      }
+    ]
+  },
+  {
+    path: '/',
+    Component: AuthLayout,
+    children: [
+      {
+        path: 'login',
+        Component: Login
+      },
+      {
+        path: 'register',
+        Component: Register
+      }
+    ]
+  },
+  {
+    path: "/dashboard",
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>, // if protected
+    children: [
+      {
+        index: true,
+        element: <DashboardHome />
+      },
+      {
+        path: "create-donation-request",
+        element: <CreateDonationRequest />
+      },
+      {
+        path: "my-donation-requests",
+        element: <MyDonationRequests />
+      },
+      {
+        path: "profile",
+        element: <UserProfile />
+      },
+      {
+        path: "all-users",
+        element: <AllUsers />
+      },
+      {
+        path: "all-blood-donation-request",
+        element: <AdminRoute><AllDonationRequests /></AdminRoute>,
+      },
+    ],
+  },
 ]);
 
 

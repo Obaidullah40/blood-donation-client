@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-query": "^5.83.0",
+    "aos": "^2.3.4",
     "axios": "^1.11.0",
     "daisyui": "^5.0.47",
     "firebase": "^12.0.0",
