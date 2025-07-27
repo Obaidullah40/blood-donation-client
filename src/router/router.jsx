@@ -5,6 +5,9 @@ import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
+import PrivateRoute from "../routers/PrivateRoute";
+import DashboardHome from "../pages/Dashboard/DashboardHome";
+import UserProfile from "../pages/Dashboard/UserProfile";
 
 const router = createBrowserRouter([
     {
@@ -33,12 +36,25 @@ const router = createBrowserRouter([
         ]
     },
     {
-    path: "/dashboard",
-    element: <DashboardLayout />,
-    children: [
-      // protected dashboard routes
-    ],
-  },
+  path: "/dashboard",
+  element: <PrivateRoute><DashboardLayout /></PrivateRoute>, // if protected
+  children: [
+    {   index: true, 
+        element: <DashboardHome /> },
+    {
+      path: "create-donation-request",
+    //   element: <CreateDonationRequest />
+    },
+    {
+      path: "my-donation-requests",
+    //   element: <MyDonationRequests />
+    },
+    {
+      path: "profile",
+      element: <UserProfile />
+    },
+  ],
+},
 ]);
 
 

@@ -35,11 +35,16 @@ const Register = () => {
             // Save user to database
             const userInfo = {
                 email: data.email,
+                name: data.name,
+                bloodGroup: data.bloodGroup,
+                district: data.district,
+                upazila: data.upazila,
                 role: 'donor',
                 status: 'active',
                 created_at: new Date().toISOString(),
                 last_log_in: new Date().toISOString()
             };
+
 
             await axiosInstance.post('/users', userInfo);
 
@@ -67,7 +72,7 @@ const Register = () => {
         const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`;
 
         try {
-            const res = await  axios.post(imageUploadUrl, formData); 
+            const res = await axios.post(imageUploadUrl, formData);
             setProfilePic(res.data.data.url);
             Swal.fire("Uploaded", "Profile picture uploaded", "success");
         } catch (err) {
@@ -90,7 +95,7 @@ const Register = () => {
                             className="input input-bordered w-full"
                             placeholder="Your Name"
                         />
-                        {errors.name?.type === 'required' && <p className='text-red-500'>Name is required</p>}
+                        {errors.name && <p className="text-red-500">Name is required</p>}
 
                         {/* Profile Picture */}
                         <label className="label">Profile Picture</label>
@@ -109,20 +114,69 @@ const Register = () => {
                             className="input input-bordered w-full"
                             placeholder="Email"
                         />
-                        {errors.email?.type === 'required' && <p className='text-red-500'>Email is required</p>}
+                        {errors.email && <p className="text-red-500">Email is required</p>}
+
+                        {/* Blood Group */}
+                        <label className="label">Blood Group</label>
+                        <select
+                            {...register('bloodGroup', { required: true })}
+                            className="select select-bordered w-full"
+                        >
+                            <option value="">Select Blood Group</option>
+                            <option>A+</option>
+                            <option>A-</option>
+                            <option>B+</option>
+                            <option>B-</option>
+                            <option>AB+</option>
+                            <option>AB-</option>
+                            <option>O+</option>
+                            <option>O-</option>
+                        </select>
+                        {errors.bloodGroup && <p className="text-red-500">Blood group is required</p>}
+
+                        {/* District */}
+                        <label className="label">District</label>
+                        <select
+                            {...register('district', { required: true })}
+                            className="select select-bordered w-full"
+                        >
+                            <option value="">Select District</option>
+                            <option>Dhaka</option>
+                            <option>Chittagong</option>
+                            <option>Khulna</option>
+                            <option>Barisal</option>
+                            <option>Sylhet</option>
+                            <option>Rajshahi</option>
+                            <option>Mymensingh</option>
+                            <option>Rangpur</option>
+                        </select>
+                        {errors.district && <p className="text-red-500">District is required</p>}
+
+                        {/* Upazila */}
+                        <label className="label">Upazila</label>
+                        <select
+                            {...register('upazila', { required: true })}
+                            className="select select-bordered w-full"
+                        >
+                            <option value="">Select Upazila</option>
+                            <option>Savar</option>
+                            <option>Mirpur</option>
+                            <option>Dhanmondi</option>
+                            <option>Kotwali</option>
+                            <option>Panchlaish</option>
+                        </select>
+                        {errors.upazila && <p className="text-red-500">Upazila is required</p>}
 
                         {/* Password */}
                         <label className="label">Password</label>
                         <input
-                            type="passwordt"
+                            type="password"
                             {...register('password', { required: true, minLength: 6 })}
                             className="input input-bordered w-full"
                             placeholder="Password"
                         />
-                        
-                        
                         {errors.password?.type === 'required' && <p className='text-red-500'>Password is required</p>}
-                        {errors.password?.type === 'minLength' && <p className='text-red-500'>Password must be at least 6 characters</p>}
+                        {errors.password?.type === 'minLength' && <p className='text-red-500'>Minimum 6 characters</p>}
 
                         {/* Confirm Password */}
                         <label className="label">Confirm Password</label>
@@ -134,7 +188,7 @@ const Register = () => {
                         />
                         {errors.confirmPassword && <p className='text-red-500'>Please confirm your password</p>}
 
-                        {/* Button */}
+                        {/* Submit */}
                         <button className="btn w-full mt-4 bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white font-semibold shadow-md transition-all duration-300">
                             Register
                         </button>
@@ -145,7 +199,6 @@ const Register = () => {
                     </p>
                 </form>
 
-                {/* Social login (optional/blank if unused) */}
                 <SocialLogin />
             </div>
         </div>
