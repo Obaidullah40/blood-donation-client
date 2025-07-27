@@ -7,15 +7,22 @@ import {
   FaUser,
   FaArrowLeft,
 } from "react-icons/fa";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
+  const { role, loading } = useRole();
+
+  if (loading) {
+    return <div className="text-center p-10 font-semibold text-lg">Loading Dashboard...</div>;
+  }
 
   return (
     <div className="flex min-h-screen bg-gradient-to-tr from-red-50 to-white">
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-br from-red-500 to-red-600 text-white p-6 hidden md:flex flex-col shadow-lg">
         <h2 className="text-3xl font-bold mb-8 text-center tracking-wide">🩸 Dashboard</h2>
+
         <nav className="space-y-3">
           <NavLink
             to="/dashboard"
@@ -27,26 +34,73 @@ const DashboardLayout = () => {
           >
             <FaHome /> Home
           </NavLink>
-          <NavLink
-            to="/dashboard/create-donation-request"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                isActive ? "bg-white/20" : "hover:bg-white/10"
-              }`
-            }
-          >
-            <FaPlusCircle /> Create Request
-          </NavLink>
-          <NavLink
-            to="/dashboard/my-donation-requests"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                isActive ? "bg-white/20" : "hover:bg-white/10"
-              }`
-            }
-          >
-            <FaListAlt /> My Requests
-          </NavLink>
+
+          {/* Donor-only */}
+          {role === "donor" && (
+            <>
+              <NavLink
+                to="/dashboard/create-donation-request"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
+                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  }`
+                }
+              >
+                <FaPlusCircle /> Create Request
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/my-donation-requests"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
+                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  }`
+                }
+              >
+                <FaListAlt /> My Requests
+              </NavLink>
+            </>
+          )}
+
+          {/* Admin-only */}
+          {role === "admin" && (
+            <>
+              <NavLink
+                to="/dashboard/all-users"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
+                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  }`
+                }
+              >
+                👥 All Users
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/all-blood-donation-request"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
+                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  }`
+                }
+              >
+                🩸 All Blood Requests
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/content-management"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
+                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  }`
+                }
+              >
+                📝 Content Management
+              </NavLink>
+            </>
+          )}
+
+          {/* Common to All */}
           <NavLink
             to="/dashboard/profile"
             className={({ isActive }) =>
@@ -79,7 +133,7 @@ const DashboardLayout = () => {
           </button>
         </div>
 
-        {/* Nested Routes */}
+        {/* Nested Routes Render Here */}
         <div className="rounded-xl bg-white p-4 md:p-6 shadow-md border border-gray-200">
           <Outlet />
         </div>
