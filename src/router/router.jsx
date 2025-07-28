@@ -11,8 +11,16 @@ import UserProfile from "../pages/Dashboard/UserProfile";
 import MyDonationRequests from "../pages/Dashboard/MyDonationRequests";
 import CreateDonationRequest from "../pages/Dashboard/CreateDonationRequest";
 import AllUsers from "../pages/Dashboard/Admin/AllUsers";
-import AdminRoute from "../routers/AdminRoute";
 import AllDonationRequests from "../pages/Dashboard/Admin/AllDonationRequests";
+import ContentManagement from "../pages/Dashboard/Admin/ContentManagement";
+import Blogs from "../pages/Blogs";
+import AddBlog from "../pages/Dashboard/Admin/addBlog";
+import SearchPage from "../pages/SearchPage";
+import DonationRequestDetails from "../pages/DonationRequestDetails";
+import DonationRequests from "../pages/DonationRequests";
+import BlogDetails from "../pages/BlogDetails";
+import RoleRoute from "../routers/RoleRoute";
+import EditBlog from "../pages/Dashboard/Admin/EditBlog";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +31,26 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: Home
+      },
+      {
+        path: "/search",
+        element: <SearchPage />,
+      },
+      {
+        path: "/blogs",
+        element: <Blogs />,
+      },
+      {
+        path: "/blogs/:id",
+        element: <BlogDetails />,
+      },
+      {
+        path: "/donation-request",
+        element: <DonationRequests />
+      },
+      {
+        path: "/donation-request/:id",
+        element: <PrivateRoute><DonationRequestDetails /></PrivateRoute>
       }
     ]
   },
@@ -62,11 +90,23 @@ const router = createBrowserRouter([
       },
       {
         path: "all-users",
-        element: <AllUsers />
+        element: <RoleRoute allowedRoles={["admin"]}><AllUsers /></RoleRoute>
       },
       {
         path: "all-blood-donation-request",
-        element: <AdminRoute><AllDonationRequests /></AdminRoute>,
+        element: <RoleRoute allowedRoles={["admin", "volunteer"]}><AllDonationRequests /></RoleRoute>,
+      },
+      {
+        path: "content-management",
+        element: <RoleRoute allowedRoles={["admin", "volunteer"]}><ContentManagement /></RoleRoute>,
+      },
+      {
+        path: "content-management/edit/:id",
+        element: <RoleRoute allowedRoles={["admin", "volunteer"]}><EditBlog /></RoleRoute>
+      },
+      {
+        path: "content-management/add-blog",
+        element: <RoleRoute allowedRoles={["admin", "volunteer"]}><AddBlog /></RoleRoute>,
       },
     ],
   },

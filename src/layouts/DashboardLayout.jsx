@@ -8,13 +8,14 @@ import {
   FaArrowLeft,
 } from "react-icons/fa";
 import useRole from "../hooks/useRole";
+import Loading from "../pages/shared/Loading";
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const { role, loading } = useRole();
 
   if (loading) {
-    return <div className="text-center p-10 font-semibold text-lg">Loading Dashboard...</div>;
+    return <Loading/>;
   }
 
   return (
@@ -76,6 +77,33 @@ const DashboardLayout = () => {
                 👥 All Users
               </NavLink>
 
+              <NavLink
+                to="/dashboard/all-blood-donation-request"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
+                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  }`
+                }
+              >
+                🩸 All Blood Requests
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/content-management"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
+                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  }`
+                }
+              >
+                📝 Content Management
+              </NavLink>
+            </>
+          )}
+
+          {/* Volunteer-only */}
+          {role === "volunteer" && (
+            <>
               <NavLink
                 to="/dashboard/all-blood-donation-request"
                 className={({ isActive }) =>

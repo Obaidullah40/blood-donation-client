@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
@@ -13,6 +13,7 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
   const axiosInstance = useAxios();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data) => {
   try {
@@ -25,14 +26,16 @@ const Login = () => {
 
     // 3. Send to server to store in HTTP-only cookie
     const res = await axiosInstance.post('/jwt', { token: idToken });
-
+    setIsLoading(true);
     if (res.data.success) {
       Swal.fire("Welcome", "Logged in successfully!", "success");
       navigate(from, { replace: true });
     } else {
       throw new Error("JWT Token Failed");
     }
+
   } catch (error) {
+    setIsLoading(false);
     console.error(error);
     Swal.fire("Login Failed", error?.message?.replace("Firebase: ", "") || "Something went wrong", "error");
   }
@@ -70,9 +73,10 @@ const Login = () => {
 
             <button
               type="submit"
-              className="btn w-full bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white font-semibold shadow-md transition-all duration-300"
+              className="btn w-full bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white font-semibold shadow-md transition-all duration-300" disabled={isLoading}
             >
-              Login
+             {isLoading ? "Logging in..." : "Login"}
+
             </button>
           </form>
 

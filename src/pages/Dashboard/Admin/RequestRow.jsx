@@ -1,94 +1,105 @@
-// src/components/RequestRow.jsx
-import { FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
-import { useQueryClient } from "@tanstack/react-query";
+import useRole from "../../../hooks/useRole";
 import useAxios from "../../../hooks/useAxios";
 
 const RequestRow = ({ request, refetchKey }) => {
   const axios = useAxios();
-  const queryClient = useQueryClient();
+  const { role, loading } = useRole();
 
-  const {
-    _id,
-    requesterName,
-    requesterEmail,
-    recipientName,
-    hospitalName,
-    bloodGroup,
-    donationDate,
-    status,
-  } = request;
+  if (loading) return null;
 
-  const handleStatusUpdate = async () => {
-    const { value: newStatus } = await Swal.fire({
-      title: "Change Status",
-      input: "select",
-      inputOptions: {
-        pending: "Pending",
-        inprogress: "In Progress",
-        done: "Done",
-        canceled: "Canceled",
-      },
-      inputPlaceholder: "Select new status",
+  const canEdit = role === "admin";
+  console.log(canEdit);
+  
+  const canChangeStatus = role === "admin" || role === "volunteer";
+
+  const handleStatusChange = async (newStatus) => {
+    const confirm = await Swal.fire({
+      title: `Are you sure?`,
+      text: `Change status to "${newStatus}"?`,
+      icon: "question",
       showCancelButton: true,
+      confirmButtonText: "Yes",
     });
 
-    if (newStatus) {
-      try {
-        await axios.patch(`/donation-requests/${_id}`, { status: newStatus });
-        Swal.fire("Updated!", `Status changed to ${newStatus}`, "success");
-        queryClient.invalidateQueries([refetchKey]);
-      } catch (err) {
-        Swal.fire("Error", "Failed to update status", "error");
+    if (!confirm.isConfirmed) return;
+
+    try {
+      const res = await axios.patch(`/donation-requests/${request._id}`, {
+        status: newStatus,
+      });
+
+      if (res.data.modifiedCount > 0) {
+        Swal.fire("Updated!", "Status changed successfully.", "success");
+        refetchKey && refetchKey();
       }
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Failed to update status.", "error");
     }
   };
 
   const handleDelete = async () => {
     const confirm = await Swal.fire({
-      title: "Are you sure?",
-      text: "This request will be permanently deleted!",
+      title: `Are you sure?`,
+      text: `This will delete the request permanently.`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#e3342f",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Delete",
     });
 
-    if (confirm.isConfirmed) {
-      try {
-        await axios.delete(`/donation-requests/${_id}`);
-        Swal.fire("Deleted!", "Request has been removed.", "success");
-        queryClient.invalidateQueries([refetchKey]);
-      } catch (err) {
-        Swal.fire("Error", "Failed to delete request", "error");
+    if (!confirm.isConfirmed) return;
+
+    try {
+      const res = await axios.delete(`/donation-requests/${request._id}`);
+      if (res.data.deletedCount > 0) {
+        Swal.fire("Deleted!", "Request has been deleted.", "success");
+        refetchKey && refetchKey();
       }
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Delete failed", "error");
     }
   };
 
   return (
     <tr>
-      <td>{recipientName}</td>
-      <td>
-        <div>
-          <p className="font-medium">{requesterName}</p>
-          <p className="text-sm text-gray-500">{requesterEmail}</p>
-        </div>
-      </td>
-      <td>{hospitalName}</td>
-      <td>
-        <span className="badge badge-outline">{bloodGroup}</span>
-      </td>
-      <td>{donationDate}</td>
-      <td>
-        <span className="capitalize badge badge-info">{status}</span>
-      </td>
-      <td className="flex justify-end gap-2">
-        <button onClick={handleStatusUpdate} className="btn btn-sm btn-info">
-          <FaEdit />
-        </button>
-        <button onClick={handleDelete} className="btn btn-sm btn-error">
-          <FaTrash />
-        </button>
+      <td>{request.recipientName}</td>
+      <td>{request.requesterEmail}</td>
+      <td>{request.hospitalName}</td>
+      <td>{request.bloodGroup}</td>
+      <td>{request.donationDate}</td>
+      <td className="capitalize">{request.status}</td>
+      <td className="text-right flex gap-2 flex-wrap justify-end">
+        {/* ✅ Done / Cancel buttons */}
+        {canChangeStatus && request.status === "inprogress" && (
+          <>
+            <button
+              className="btn btn-xs btn-success"
+              onClick={() => handleStatusChange("done")}
+            >
+              Done
+            </button>
+            <button
+              className="btn btn-xs btn-warning"
+              onClick={() => handleStatusChange("canceled")}
+            >
+              Cancel
+            </button>
+          </>
+        )}
+
+        {/* 🛠️ Only for admin */}
+        {canEdit && (
+          <>
+            <button
+              className="btn btn-xs btn-error"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+          </>
+        )}
       </td>
     </tr>
   );

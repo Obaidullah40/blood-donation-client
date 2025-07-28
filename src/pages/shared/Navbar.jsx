@@ -31,7 +31,7 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          to="/dashboard/create-donation-request"
+          to="/donation-request"
           className={({ isActive }) =>
             isActive ? "text-red-600 font-semibold" : "text-gray-700"
           }

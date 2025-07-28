@@ -15,7 +15,7 @@ const MyDonationRequests = () => {
       try {
         const res = await axiosInstance.get(`/donation-requests?email=${user.email}`);
         // console.log('API response:', res.data);
-        setRequests(res.data.requests || res.data || []); // fallback for different response structures
+        setRequests(res.data.requests || res.data || []); 
       } catch (err) {
         console.error(err);
       }
