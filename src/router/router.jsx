@@ -21,6 +21,7 @@ import DonationRequests from "../pages/DonationRequests";
 import BlogDetails from "../pages/BlogDetails";
 import RoleRoute from "../routers/RoleRoute";
 import EditBlog from "../pages/Dashboard/Admin/EditBlog";
+import FundPayment from "../pages/Dashboard/Funding/FundPayment";
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,14 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <UserProfile />
+      },
+      {
+        path: "funding",
+        // element: <FundingPage />,
+      },
+      {
+        path: "funding/payment",
+        element: <FundPayment />,
       },
       {
         path: "all-users",
