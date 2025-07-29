@@ -15,7 +15,7 @@ const Register = () => {
   const axiosInstance = useAxios();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/";
 
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
@@ -44,8 +44,7 @@ const Register = () => {
     }
 
     try {
-      const result = await createUser(data.email, data.password);
-      const user = result.user;
+      await createUser(data.email, data.password);
 
       await updateUserProfile({
         displayName: data.name,
@@ -65,14 +64,12 @@ const Register = () => {
       };
 
       await axiosInstance.post("/users", userInfo);
-      const idToken = await user.getIdToken();
-      await axiosInstance.post("/jwt", { token: idToken });
 
       Swal.fire("Success", "Account Created", "success");
       navigate(from);
     } catch (err) {
       console.error(err);
-      Swal.fire("Error", err.message, "error");
+      Swal.fire("Error", err.response?.data?.message || err.message, "error");
     }
   };
 
@@ -92,69 +89,120 @@ const Register = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 shadow-xl bg-white rounded-xl">
-      <div className="p-8">
-        <h2 className="text-3xl font-bold text-center mb-6 text-red-600">Register</h2>
+   <div className="min-h-screen bg-gradient-to-br from-red-50 to-white flex items-center justify-center p-4">
+      <div className="w-full max-w-lg bg-white shadow-2xl rounded-2xl p-8">
+        <h2 className="text-4xl font-bold text-center text-red-600 mb-6">Create Your Account</h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <input {...register("name", { required: true })} placeholder="Full Name" className="input input-bordered w-full" />
-          <input type="file" onChange={handleImageUpload} className="file-input file-input-bordered w-full" />
-          <input type="email" {...register("email", { required: true })} placeholder="Email" className="input input-bordered w-full" />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Name */}
+          <div>
+            <label className="label">Full Name</label>
+            <input
+              {...register("name", { required: true })}
+              placeholder="John Doe"
+              className="input input-bordered w-full"
+            />
+          </div>
 
-          {/* District & Upazila */}
-          <div className="grid grid-cols-2 gap-3">
+          {/* Profile Picture Upload */}
+          <div>
+            <label className="label">Profile Picture</label>
+            <input type="file" onChange={handleImageUpload} className="file-input file-input-bordered w-full" />
+            {profilePic && (
+              <img src={profilePic} alt="Profile" className="w-20 h-20 mt-2 rounded-full object-cover border" />
+            )}
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="label">Email</label>
+            <input
+              type="email"
+              {...register("email", { required: true })}
+              placeholder="you@example.com"
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          {/* District and Upazila */}
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label>District</label>
+              <label className="label">District</label>
               <select
-                className="select select-bordered w-full"
                 {...register("district", { required: true })}
                 onChange={(e) => setSelectedDistrict(e.target.value)}
+                className="select select-bordered w-full"
               >
                 <option value="">Select District</option>
                 {districts.map((d) => (
-                  <option key={d.id} value={d.name}>
-                    {d.name}
-                  </option>
+                  <option key={d.id} value={d.name}>{d.name}</option>
                 ))}
               </select>
             </div>
+
             <div>
-              <label>Upazila</label>
+              <label className="label">Upazila</label>
               <select
-                className="select select-bordered w-full"
                 {...register("upazila", { required: true })}
+                className="select select-bordered w-full"
               >
                 <option value="">Select Upazila</option>
                 {filteredUpazilas.map((u) => (
-                  <option key={u.id} value={u.name}>
-                    {u.name}
-                  </option>
+                  <option key={u.id} value={u.name}>{u.name}</option>
                 ))}
               </select>
             </div>
           </div>
 
           {/* Blood Group */}
-          <select {...register("bloodGroup", { required: true })} className="select select-bordered w-full">
-            <option value="">Blood Group</option>
-            {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
-              <option key={bg} value={bg}>{bg}</option>
-            ))}
-          </select>
+          <div>
+            <label className="label">Blood Group</label>
+            <select
+              {...register("bloodGroup", { required: true })}
+              className="select select-bordered w-full"
+            >
+              <option value="">Select Blood Group</option>
+              {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
+                <option key={bg} value={bg}>{bg}</option>
+              ))}
+            </select>
+          </div>
 
           {/* Password */}
-          <input type="password" {...register("password", { required: true, minLength: 6 })} placeholder="Password" className="input input-bordered w-full" />
-          <input type="password" {...register("confirmPassword", { required: true })} placeholder="Confirm Password" className="input input-bordered w-full" />
+          <div>
+            <label className="label">Password</label>
+            <input
+              type="password"
+              {...register("password", { required: true, minLength: 6 })}
+              placeholder="At least 6 characters"
+              className="input input-bordered w-full"
+            />
+          </div>
 
-          <button className="btn btn-primary w-full">Register</button>
+          {/* Confirm Password */}
+          <div>
+            <label className="label">Confirm Password</label>
+            <input
+              type="password"
+              {...register("confirmPassword", { required: true })}
+              placeholder="Re-enter password"
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button className="btn btn-error w-full text-white tracking-wide">Register</button>
         </form>
 
-        <p className="text-center mt-4">
-          Already have an account? <Link to="/login" className="text-blue-600">Login</Link>
+        {/* Already have an account */}
+        <p className="text-center text-sm mt-6">
+          Already have an account?
+          <Link to="/login" className="ml-1 text-red-600 font-medium hover:underline">Login</Link>
         </p>
       </div>
     </div>
   );
 };
+
 
 export default Register;

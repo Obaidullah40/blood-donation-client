@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import useAxios from "../hooks/useAxios";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
@@ -10,10 +10,10 @@ const DonationRequests = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
- const { data: requests = [], isLoading } = useQuery({
+  const { data: requests = [], isLoading } = useQuery({
     queryKey: ["public-donation-requests"],
     queryFn: async () => {
-      const res = await axios.get("/admin/all-donation-requests?status=pending");
+      const res = await axios.get("/public/donation-requests?status=pending");
       return res.data.requests;
     },
   });
@@ -27,7 +27,7 @@ const DonationRequests = () => {
     }
   };
 
-  if (isLoading) return <p className="text-center mt-8"><Loading/></p>;
+  if (isLoading) return <p className="text-center mt-8"><Loading /></p>;
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-4">
@@ -48,8 +48,7 @@ const DonationRequests = () => {
             <div className="text-right">
               <button
                 className="btn btn-sm btn-primary"
-                onClick={() => handleView(req._id)}
-              >
+                onClick={() => handleView(req._id)}   >
                 View
               </button>
             </div>

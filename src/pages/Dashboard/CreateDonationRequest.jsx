@@ -37,10 +37,13 @@ const CreateDonationRequest = () => {
       return Swal.fire('Blocked', 'You are not allowed to create a donation request.', 'warning');
     }
 
+    const districtObj = districts.find(d => d.id === selectedDistrict);
+
     const requestData = {
       ...data,
       requesterName: user?.displayName,
       requesterEmail: user?.email,
+      recipientDistrict: districtObj?.name || '', 
       status: 'pending',
       createdAt: new Date().toISOString(),
     };

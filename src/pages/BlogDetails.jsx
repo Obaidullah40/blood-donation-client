@@ -15,7 +15,9 @@ const BlogDetails = () => {
     },
   });
 
-  if (isLoading) return <Loading/>;
+  if (isLoading) return <div className="text-center mt-8">
+    <Loading />
+  </div>;
 
   if (!blog) return <p className="text-center mt-10 text-red-500">Blog not found</p>;
 

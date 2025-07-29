@@ -9,7 +9,7 @@ const RequestRow = ({ request, refetchKey }) => {
   if (loading) return null;
 
   const canEdit = role === "admin";
-  console.log(canEdit);
+  // console.log(canEdit);
   
   const canChangeStatus = role === "admin" || role === "volunteer";
 

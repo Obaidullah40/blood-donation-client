@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useAxios from '../../hooks/useAxios';
+import { Link } from 'react-router';
 
 const MyDonationRequests = () => {
   const { user } = useAuth();
@@ -14,43 +15,39 @@ const MyDonationRequests = () => {
     const fetchRequests = async () => {
       try {
         const res = await axiosInstance.get(`/donation-requests?email=${user.email}`);
-        // console.log('API response:', res.data);
-        setRequests(res.data.requests || res.data || []); 
+        setRequests(res.data.requests || res.data || []);
       } catch (err) {
         console.error(err);
       }
     };
 
-    if (user?.email) {
-      fetchRequests();
-    }
+    if (user?.email) fetchRequests();
   }, [user?.email, axiosInstance]);
 
-  const filteredRequests = filter === 'all'
-    ? requests
-    : requests.filter(req => req.status === filter);
-
+  const filteredRequests = filter === 'all' ? requests : requests.filter(req => req.status === filter);
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
-  const displayedRequests = filteredRequests.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const displayedRequests = filteredRequests.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleFilterChange = (status) => {
     setFilter(status);
     setCurrentPage(1);
   };
 
+  const handleDelete = (id) => {
+    // Add your delete logic here
+    console.log("Deleting request:", id);
+  };
+
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">My Donation Requests</h2>
+    <div className="p-4 md:p-8">
+      <h2 className="text-3xl font-bold text-center mb-6 text-red-600">🩸 My Donation Requests</h2>
 
       {/* Filter Buttons */}
-      <div className="flex gap-2 mb-4 flex-wrap">
+      <div className="flex flex-wrap justify-center gap-2 mb-6">
         {['all', 'pending', 'inprogress', 'done', 'canceled'].map(status => (
           <button
             key={status}
-            className={`btn btn-sm ${filter === status ? 'btn-primary' : 'btn-outline'}`}
+            className={`btn btn-sm ${filter === status ? 'btn-error text-white' : 'btn-outline'}`}
             onClick={() => handleFilterChange(status)}
           >
             {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -59,9 +56,9 @@ const MyDonationRequests = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="table w-full border rounded">
-          <thead className="bg-gray-200">
+      <div className="overflow-x-auto bg-white rounded-xl shadow-md">
+        <table className="table w-full text-sm md:text-base">
+          <thead className="bg-red-50 text-red-700 uppercase">
             <tr>
               <th>Recipient</th>
               <th>Location</th>
@@ -69,37 +66,43 @@ const MyDonationRequests = () => {
               <th>Time</th>
               <th>Blood Group</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th className="text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {displayedRequests.map(req => (
-              <tr key={req._id}>
-                <td>{req.recipientName}</td>
-                <td>{req.recipientDistrict}, {req.recipientUpazila}</td>
-                <td>{req.donationDate}</td>
-                <td>{req.donationTime}</td>
-                <td>{req.bloodGroup}</td>
-                <td>
-                  <span className={`badge ${
-                    req.status === 'pending' ? 'badge-warning' :
-                    req.status === 'inprogress' ? 'badge-info' :
-                    req.status === 'done' ? 'badge-success' :
-                    'badge-error'
-                  }`}>
-                    {req.status}
-                  </span>
-                </td>
-                <td className="flex flex-wrap gap-1">
-                  <button className="btn btn-xs btn-outline btn-info">View</button>
-                  <button className="btn btn-xs btn-outline btn-warning">Edit</button>
-                  <button className="btn btn-xs btn-outline btn-error">Delete</button>
-                </td>
-              </tr>
-            ))}
-            {displayedRequests.length === 0 && (
+            {displayedRequests.length > 0 ? (
+              displayedRequests.map(req => (
+                <tr key={req._id} className="hover">
+                  <td>{req.recipientName}</td>
+                  <td>{req.recipientDistrict}, {req.recipientUpazila}</td>
+                  <td>{req.donationDate}</td>
+                  <td>{req.donationTime}</td>
+                  <td><span className="font-semibold">{req.bloodGroup}</span></td>
+                  <td>
+                    <span className={`badge px-3 py-1 capitalize 
+                      ${req.status === 'pending' ? 'badge-warning' :
+                        req.status === 'inprogress' ? 'badge-info' :
+                          req.status === 'done' ? 'badge-success' :
+                            'badge-error'}`}>
+                      {req.status}
+                    </span>
+                  </td>
+                  <td className="flex flex-wrap gap-2 justify-center">
+                    <Link to={`/donation-request/${req._id}`} className="btn btn-sm btn-outline">
+                      View
+                    </Link>
+                    <Link to={`/dashboard/edit-donation-request/${req._id}`} className="btn btn-sm btn-info text-white">
+                      Edit
+                    </Link>
+                    <button onClick={() => handleDelete(req._id)} className="btn btn-sm btn-error text-white">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
-                <td colSpan="7" className="text-center py-4">No donation requests found.</td>
+                <td colSpan="7" className="text-center py-6 text-gray-500">No donation requests found.</td>
               </tr>
             )}
           </tbody>
@@ -108,11 +111,11 @@ const MyDonationRequests = () => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="mt-4 flex justify-center gap-2">
+        <div className="mt-6 flex justify-center gap-2 flex-wrap">
           {Array.from({ length: totalPages }).map((_, idx) => (
             <button
               key={idx}
-              className={`btn btn-sm ${currentPage === idx + 1 ? 'btn-active' : 'btn-outline'}`}
+              className={`btn btn-sm ${currentPage === idx + 1 ? 'btn-active btn-error text-white' : 'btn-outline'}`}
               onClick={() => setCurrentPage(idx + 1)}
             >
               {idx + 1}

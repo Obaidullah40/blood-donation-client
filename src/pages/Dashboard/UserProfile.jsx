@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import useAuth from '../../hooks/useAuth';
 import useAxios from '../../hooks/useAxios';
 import Swal from 'sweetalert2';
+import Loading from '../shared/Loading';
 
 const UserProfile = () => {
-  const { user } = useAuth();
   const axiosInstance = useAxios();
 
   const [profile, setProfile] = useState(null);
@@ -15,7 +14,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axiosInstance.get('/profile', { withCredentials: true });
+        const res = await axiosInstance.get('/profile');
         setProfile(res.data);
         setFormData(res.data);
       } catch (err) {
@@ -45,7 +44,9 @@ const UserProfile = () => {
     }
   };
 
-//   if (!profile) return <p>Loading...</p>;
+  if (!profile) return <div className="text-center mt-8">
+    <Loading />
+  </div>;
 
   return (
     <div className="max-w-xl mx-auto bg-white shadow-md p-6 rounded">

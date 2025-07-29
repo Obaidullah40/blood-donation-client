@@ -21,10 +21,10 @@ import DonationRequests from "../pages/DonationRequests";
 import BlogDetails from "../pages/BlogDetails";
 import RoleRoute from "../routers/RoleRoute";
 import EditBlog from "../pages/Dashboard/Admin/EditBlog";
-import FundPayment from "../pages/Dashboard/Funding/FundPayment";
 import FundingPage from "../pages/Dashboard/Funding/FundingPage";
-import DonationRequestView from "../pages/Dashboard/DonationRequestView";
 import EditDonationRequest from "../pages/Dashboard/EditDonationRequest";
+import ForbiddenPage from "../pages/ForbiddenPage";
+import NotFound from "../pages/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -55,8 +55,13 @@ const router = createBrowserRouter([
       {
         path: "/donation-request/:id",
         element: <PrivateRoute><DonationRequestDetails /></PrivateRoute>
-      }
-    ]
+      },
+      {
+        path: "/forbidden",
+        element: <ForbiddenPage />
+      },
+    ],
+    errorElement:<NotFound/>
   },
   {
     path: '/',
@@ -74,7 +79,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <PrivateRoute><DashboardLayout /></PrivateRoute>, // if protected
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>, 
     children: [
       {
         index: true,
@@ -87,10 +92,6 @@ const router = createBrowserRouter([
       {
         path: "my-donation-requests",
         element: <MyDonationRequests />
-      },
-      {
-        path: "donation-request/view/:id",
-        element: <DonationRequestView  />
       },
       {
         path: "edit-donation-request/:id",

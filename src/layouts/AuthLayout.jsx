@@ -1,49 +1,73 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { motion } from "framer-motion";
-import bdImg from "../assets/blood-donation.jpg"
-const AuthLayout = () => {
-  return (
-    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-white">
+import bdImg from "../assets/blood-donation.jpg";
+import { ArrowLeft, Home } from "lucide-react";
 
-      {/* Animated Left Banner */}
+const AuthLayout = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-white font-sans relative">
+
+      {/* 🔙 Back & Home Buttons */}
+      <div className="absolute top-4 left-4 z-50 flex gap-3">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+        >
+          <ArrowLeft size={16} />
+          Back
+        </button>
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+        >
+          <Home size={16} />
+          Home
+        </button>
+      </div>
+
+      {/* Left Banner with Animation */}
       <motion.div
-        initial={{ x: -100, opacity: 0 }}
+        initial={{ x: -60, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="bg-gradient-to-br from-red-100 via-white to-red-50 flex flex-col justify-center items-center p-10"
+        transition={{ duration: 0.8 }}
+        className="bg-gradient-to-br from-red-100 to-white flex flex-col justify-center items-center px-10 py-12 shadow-md"
       >
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-4xl font-extrabold text-red-600 text-center mb-4"
+          className="text-5xl md:text-6xl font-extrabold text-red-600 leading-tight text-center mb-6"
         >
-          Welcome to <br /> BloodConnect 🩸
+          BloodConnect 🩸
         </motion.h1>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="text-gray-600 text-center max-w-sm mb-6"
+          className="text-gray-700 text-center text-lg max-w-md mb-8"
         >
-          Join the mission to save lives. Login or register to get started.
+          Empower your kindness. Register or login to become a life-saving donor or request blood in critical times.
         </motion.p>
+
         <motion.img
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.9 }}
           src={bdImg}
-          alt="blood-donation"
-          className="w-full max-w-sm rounded-2xl shadow-xl"
+          alt="Blood donation illustration"
+          className="w-full max-w-xs md:max-w-sm rounded-xl shadow-lg"
         />
       </motion.div>
 
-      {/* Animated Right Form Side */}
+      {/* Right Side Auth Form */}
       <motion.div
-        initial={{ x: 100, opacity: 0 }}
+        initial={{ x: 60, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="flex items-center justify-center bg-white p-6 md:p-12"
+        transition={{ duration: 0.8 }}
+        className="flex items-center justify-center bg-white px-6 md:px-16 py-10"
       >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -54,7 +78,6 @@ const AuthLayout = () => {
           <Outlet />
         </motion.div>
       </motion.div>
-
     </div>
   );
 };

@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import useAuth from '../../hooks/useAuth';
-import SocialLogin from './SocialLogin';
-import useAxios from '../../hooks/useAxios';
 
 const Login = () => {
   const { signIn } = useAuth();
@@ -12,35 +10,21 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
-  const axiosInstance = useAxios();
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data) => {
-  try {
-    // 1. Firebase login
-    const result = await signIn(data.email, data.password);
-    const user = result.user;
-
-    // 2. Get Firebase ID token
-    const idToken = await user.getIdToken();
-
-    // 3. Send to server to store in HTTP-only cookie
-    const res = await axiosInstance.post('/jwt', { token: idToken });
     setIsLoading(true);
-    if (res.data.success) {
+    try {
+      await signIn(data.email, data.password);
       Swal.fire("Welcome", "Logged in successfully!", "success");
       navigate(from, { replace: true });
-    } else {
-      throw new Error("JWT Token Failed");
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Login Failed", error?.message?.replace("Firebase: ", "") || "Something went wrong", "error");
+    } finally {
+      setIsLoading(false);
     }
-
-  } catch (error) {
-    setIsLoading(false);
-    console.error(error);
-    Swal.fire("Login Failed", error?.message?.replace("Firebase: ", "") || "Something went wrong", "error");
-  }
-};
-
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-base-200 px-4">
@@ -73,23 +57,20 @@ const Login = () => {
 
             <button
               type="submit"
-              className="btn w-full bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white font-semibold shadow-md transition-all duration-300" disabled={isLoading}
+              className="btn w-full bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white font-semibold shadow-md transition-all duration-300"
+              disabled={isLoading}
             >
-             {isLoading ? "Logging in..." : "Login"}
-
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           </form>
 
           <p className="text-center mt-4">
             <small>New here? <Link to="/register" className="text-blue-600 underline">Create Account</Link></small>
           </p>
-
-          <SocialLogin />
         </div>
       </div>
     </div>
   );
 };
-
 
 export default Login;

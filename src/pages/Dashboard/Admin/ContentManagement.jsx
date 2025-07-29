@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import Swal from "sweetalert2";
 import useAxios from "../../../hooks/useAxios";
 import useRole from "../../../hooks/useRole";
+import Loading from "../../shared/Loading";
 
 const ContentManagement = () => {
   const axios = useAxios();
@@ -46,7 +47,9 @@ const ContentManagement = () => {
     }
   };
 
-  if (loading) return <div className="p-10 text-center">Loading...</div>;
+  if (loading) return <div className="text-center mt-8">
+    <Loading />
+  </div>;
 
   return (
     <div className="space-y-6">

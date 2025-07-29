@@ -13,7 +13,7 @@ const useUserData = () => {
     const fetchUserData = async () => {
       if (user?.email) {
         try {
-          const res = await axiosInstance.get(`/profile?email=${user.email}`);
+          const res = await axiosInstance.get('/profile');
           setUserData(res.data);
         } catch (err) {
           console.error("Failed to fetch userData:", err);

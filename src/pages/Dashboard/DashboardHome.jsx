@@ -73,8 +73,8 @@ const DashboardHome = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.map((request) => (
-                                    <tr key={request._id}>
+                                {data.map((request) => {
+                                    return (<tr key={request._id}>
                                         <td>{request.recipientName}</td>
                                         <td>
                                             {request.recipientDistrict}, {request.recipientUpazila}
@@ -84,47 +84,26 @@ const DashboardHome = () => {
                                         <td>{request.bloodGroup}</td>
                                         <td className="capitalize">{request.status}</td>
                                         <td className="flex gap-2 justify-end">
-                                            <Link
-                                                to={`/dashboard/donation-request/view/${request._id}`}
-                                                className="btn btn-sm btn-outline"
-                                            >
+                                            <Link to={`/donation-request/${request._id}`} className="btn btn-sm btn-outline">
                                                 View
                                             </Link>
-                                            {request.status === "inprogress" && (
-                                                <>
-                                                    <button
-                                                        onClick={() =>
-                                                            handleUpdateStatus(request._id, "done")
-                                                        }
-                                                        className="btn btn-sm btn-success"
-                                                    >
-                                                        Done
-                                                    </button>
-                                                    <button
-                                                        onClick={() =>
-                                                            handleUpdateStatus(request._id, "canceled")
-                                                        }
-                                                        className="btn btn-sm btn-warning"
-                                                    >
-                                                        Cancel
-                                                    </button>
-                                                </>
-                                            )}
-                                            <Link
-                                                to={`/dashboard/edit-donation-request/${request._id}`}
-                                                className="btn btn-sm btn-info"
-                                            >
+                                            {request.status === "inprogress" && (<>
+                                                <button onClick={() => handleUpdateStatus(request._id, "done")} className="btn btn-sm btn-success">
+                                                    Done
+                                                </button>
+                                                <button onClick={() => handleUpdateStatus(request._id, "canceled")} className="btn btn-sm btn-warning">
+                                                    Cancel
+                                                </button>
+                                            </>)}
+                                            <Link to={`/dashboard/edit-donation-request/${request._id}`} className="btn btn-sm btn-info">
                                                 Edit
                                             </Link>
-                                            <button
-                                                onClick={() => handleDelete(request._id)}
-                                                className="btn btn-sm btn-error"
-                                            >
+                                            <button onClick={() => handleDelete(request._id)} className="btn btn-sm btn-error">
                                                 Delete
                                             </button>
                                         </td>
-                                    </tr>
-                                ))}
+                                    </tr>);
+                                })}
                             </tbody>
                         </table>
                     </div>

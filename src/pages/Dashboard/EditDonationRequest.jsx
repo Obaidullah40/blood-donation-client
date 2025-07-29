@@ -67,7 +67,9 @@ const EditDonationRequest = () => {
     }
   };
 
-  if (loading) return <Loading/>;
+  if (loading) return <div className="text-center mt-8">
+    <Loading />
+  </div>;
   if (!request) return <p className="text-center my-10">Request not found.</p>;
   if (["done", "canceled"].includes(request.status)) {
     return <p className="text-center text-red-500">This request cannot be edited.</p>;
