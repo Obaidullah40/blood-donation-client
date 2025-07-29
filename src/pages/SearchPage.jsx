@@ -7,25 +7,27 @@ const SearchPage = () => {
   const axios = useAxios();
   const [formData, setFormData] = useState({
     bloodGroup: "",
-    division: "",
     district: "",
+    upazila: "",
   });
 
   const [donors, setDonors] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const [filteredDistricts, setFilteredDistricts] = useState([]);
+  const [filteredUpazilas, setFilteredUpazilas] = useState([]);
 
   useEffect(() => {
-    if (formData.division) {
-      const matched = districts.filter(
-        (d) => d.division_id === formData.division
-      );
-      setFilteredDistricts(matched);
+    if (formData.district) {
+      const matched = districts.find(d => d.name === formData.district);
+      if (matched) {
+        const filtered = upazilas.filter(u => u.district_id === matched.id);
+        setFilteredUpazilas(filtered);
+      } else {
+        setFilteredUpazilas([]);
+      }
     } else {
-      setFilteredDistricts([]);
+      setFilteredUpazilas([]);
     }
-  }, [formData.division]);
+  }, [formData.district]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,22 +76,6 @@ const SearchPage = () => {
           </select>
         </div>
 
-        {/* Division */}
-        <div>
-          <label className="label">Division</label>
-          <select
-            name="division"
-            value={formData.division}
-            onChange={handleChange}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select Division</option>
-            {divisions.map((d) => (
-              <option key={d.id} value={d.id}>{d.name}</option>
-            ))}
-          </select>
-        </div>
-
         {/* District */}
         <div>
           <label className="label">District</label>
@@ -101,8 +87,25 @@ const SearchPage = () => {
             required
           >
             <option value="">Select District</option>
-            {filteredDistricts.map((d) => (
+            {districts.map((d) => (
               <option key={d.id} value={d.name}>{d.name}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Upazila */}
+        <div>
+          <label className="label">Upazila</label>
+          <select
+            name="upazila"
+            value={formData.upazila}
+            onChange={handleChange}
+            className="select select-bordered w-full"
+            required
+          >
+            <option value="">Select Upazila</option>
+            {filteredUpazilas.map((u) => (
+              <option key={u.id} value={u.name}>{u.name}</option>
             ))}
           </select>
         </div>
