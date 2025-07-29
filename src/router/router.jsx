@@ -22,6 +22,7 @@ import BlogDetails from "../pages/BlogDetails";
 import RoleRoute from "../routers/RoleRoute";
 import EditBlog from "../pages/Dashboard/Admin/EditBlog";
 import FundPayment from "../pages/Dashboard/Funding/FundPayment";
+import FundingPage from "../pages/Dashboard/Funding/FundingPage";
 
 const router = createBrowserRouter([
   {
@@ -91,7 +92,7 @@ const router = createBrowserRouter([
       },
       {
         path: "funding",
-        // element: <FundingPage />,
+        element: <FundingPage />,
       },
       {
         path: "funding/payment",
