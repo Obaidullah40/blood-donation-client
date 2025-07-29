@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useAxios from "../hooks/useAxios";
-import divisions from "../assets/divisions.json";
-import districts from "../assets/districts.json";
+import districts from '../assets/districts.json';
+import upazilas from "../assets/upazilas.json";
 
 const SearchPage = () => {
   const axios = useAxios();

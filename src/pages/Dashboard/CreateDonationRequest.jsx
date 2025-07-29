@@ -5,8 +5,8 @@ import useAuth from '../../hooks/useAuth';
 import useAxios from '../../hooks/useAxios';
 import { useNavigate } from 'react-router';
 import useUserData from '../../hooks/useUserData';
-import divisions from '../../assets/divisions.json';
 import districts from '../../assets/districts.json';
+import upazilas from '../../assets/upazilas.json';
 
 const CreateDonationRequest = () => {
   const { user } = useAuth();
@@ -20,17 +20,17 @@ const CreateDonationRequest = () => {
     formState: { errors },
   } = useForm();
 
-  const [selectedDivision, setSelectedDivision] = useState('');
-  const [filteredDistricts, setFilteredDistricts] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [filteredUpazilas, setFilteredUpazilas] = useState([]);
 
   useEffect(() => {
-    if (selectedDivision) {
-      const matched = districts.filter(d => d.division_id === selectedDivision);
-      setFilteredDistricts(matched);
+    if (selectedDistrict) {
+      const matched = upazilas.filter(u => u.district_id === selectedDistrict);
+      setFilteredUpazilas(matched);
     } else {
-      setFilteredDistricts([]);
+      setFilteredUpazilas([]);
     }
-  }, [selectedDivision]);
+  }, [selectedDistrict]);
 
   const onSubmit = async (data) => {
     if (userData?.status !== 'active') {
@@ -75,33 +75,33 @@ const CreateDonationRequest = () => {
             {errors.recipientName && <p className="text-red-500 text-sm">This field is required</p>}
           </div>
 
-          {/* Division → District */}
+          {/* District → Upazila */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="label">Recipient Division</label>
+              <label className="label">Recipient District</label>
               <select
                 className="select select-bordered w-full"
-                value={selectedDivision}
-                onChange={(e) => setSelectedDivision(e.target.value)}
+                value={selectedDistrict}
+                onChange={(e) => setSelectedDistrict(e.target.value)}
               >
-                <option value="">Select Division</option>
-                {divisions.map((div) => (
-                  <option key={div.id} value={div.id}>{div.name}</option>
+                <option value="">Select District</option>
+                {districts.map((d) => (
+                  <option key={d.id} value={d.id}>{d.name}</option>
                 ))}
               </select>
             </div>
+
             <div>
-              <label className="label">Recipient District</label>
-              <select {...register('recipientDistrict', { required: true })} className="select select-bordered w-full">
-                <option value="">Select District</option>
-                {filteredDistricts.map((dist) => (
-                  <option key={dist.id} value={dist.name}>{dist.name}</option>
+              <label className="label">Recipient Upazila</label>
+              <select {...register('recipientUpazila', { required: true })} className="select select-bordered w-full">
+                <option value="">Select Upazila</option>
+                {filteredUpazilas.map((u) => (
+                  <option key={u.id} value={u.name}>{u.name}</option>
                 ))}
               </select>
-              {errors.recipientDistrict && <p className="text-red-500 text-sm">District is required</p>}
+              {errors.recipientUpazila && <p className="text-red-500 text-sm">Upazila is required</p>}
             </div>
           </div>
-
 
           {/* Hospital & Address */}
           <input {...register('hospitalName', { required: true })} className="input input-bordered w-full" placeholder="Hospital Name" />

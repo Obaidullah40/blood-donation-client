@@ -12,7 +12,7 @@ const Navbar = () => {
       .then(() => {
         setLoading(true);
         Swal.fire("Logged out", "", "success");
-        navigate("/"); // redirect after logout
+        navigate("/");
       })
       .catch(console.error);
   };
@@ -63,18 +63,62 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100 px-4 shadow">
+    <div className="navbar bg-base-100 px-4 shadow-md">
+      {/* Left: Brand + Mobile menu */}
       <div className="navbar-start">
-        <Link to="/" className="text-xl font-bold">
+        {/* Mobile Dropdown */}
+        <div className="dropdown lg:hidden">
+          <button tabIndex={0} className="btn btn-ghost lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            {navItems}
+            {!user ? (
+              <>
+                <li>
+                  <Link to="/login">Login</Link>
+                </li>
+                <li>
+                  <Link to="/register">Join as Donor</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <button onClick={handleLogout}>Logout</button>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+
+        {/* Logo */}
+        <Link to="/" className="text-xl font-bold ml-2">
           🩸 Blood Donation
         </Link>
       </div>
 
+      {/* Center: Desktop nav */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 gap-2">{navItems}</ul>
       </div>
 
-      <div className="navbar-end">
+      {/* Right: Auth Buttons or Avatar */}
+      <div className="navbar-end hidden lg:flex">
         {!user ? (
           <>
             <Link to="/login" className="btn btn-sm btn-outline mr-2">
