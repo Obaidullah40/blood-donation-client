@@ -17,6 +17,22 @@ const Register = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
 
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [filteredUpazilas, setFilteredUpazilas] = useState([]);
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      const selected = districts.find(d => d.name === selectedDistrict);
+      if (selected) {
+        const matched = upazilas.filter(u => u.district_id === selected.id);
+        setFilteredUpazilas(matched);
+      } else {
+        setFilteredUpazilas([]);
+      }
+    } else {
+      setFilteredUpazilas([]);
+    }
+  }, [selectedDistrict]);
 
   const onSubmit = async (data) => {
     if (!profilePic) {
@@ -92,6 +108,7 @@ const Register = () => {
               <select
                 className="select select-bordered w-full"
                 {...register("district", { required: true })}
+                onChange={(e) => setSelectedDistrict(e.target.value)}
               >
                 <option value="">Select District</option>
                 {districts.map((d) => (
@@ -100,7 +117,6 @@ const Register = () => {
                   </option>
                 ))}
               </select>
-
             </div>
             <div>
               <label>Upazila</label>
@@ -109,7 +125,7 @@ const Register = () => {
                 {...register("upazila", { required: true })}
               >
                 <option value="">Select Upazila</option>
-                {upazilas.map((u) => (
+                {filteredUpazilas.map((u) => (
                   <option key={u.id} value={u.name}>
                     {u.name}
                   </option>

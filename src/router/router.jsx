@@ -23,6 +23,8 @@ import RoleRoute from "../routers/RoleRoute";
 import EditBlog from "../pages/Dashboard/Admin/EditBlog";
 import FundPayment from "../pages/Dashboard/Funding/FundPayment";
 import FundingPage from "../pages/Dashboard/Funding/FundingPage";
+import DonationRequestView from "../pages/Dashboard/DonationRequestView";
+import EditDonationRequest from "../pages/Dashboard/EditDonationRequest";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +87,14 @@ const router = createBrowserRouter([
       {
         path: "my-donation-requests",
         element: <MyDonationRequests />
+      },
+      {
+        path: "donation-request/view/:id",
+        element: <DonationRequestView  />
+      },
+      {
+        path: "edit-donation-request/:id",
+        element: <EditDonationRequest />
       },
       {
         path: "profile",
