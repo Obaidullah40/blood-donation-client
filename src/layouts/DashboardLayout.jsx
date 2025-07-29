@@ -15,7 +15,7 @@ const DashboardLayout = () => {
   const { role, loading } = useRole();
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (
@@ -28,8 +28,7 @@ const DashboardLayout = () => {
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                isActive ? "bg-white/20" : "hover:bg-white/10"
+              `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
               }`
             }
           >
@@ -42,8 +41,7 @@ const DashboardLayout = () => {
               <NavLink
                 to="/dashboard/create-donation-request"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
                   }`
                 }
               >
@@ -53,8 +51,7 @@ const DashboardLayout = () => {
               <NavLink
                 to="/dashboard/my-donation-requests"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
                   }`
                 }
               >
@@ -69,8 +66,7 @@ const DashboardLayout = () => {
               <NavLink
                 to="/dashboard/all-users"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
                   }`
                 }
               >
@@ -80,8 +76,7 @@ const DashboardLayout = () => {
               <NavLink
                 to="/dashboard/all-blood-donation-request"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
                   }`
                 }
               >
@@ -91,8 +86,7 @@ const DashboardLayout = () => {
               <NavLink
                 to="/dashboard/content-management"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
                   }`
                 }
               >
@@ -107,8 +101,7 @@ const DashboardLayout = () => {
               <NavLink
                 to="/dashboard/all-blood-donation-request"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
                   }`
                 }
               >
@@ -118,8 +111,7 @@ const DashboardLayout = () => {
               <NavLink
                 to="/dashboard/content-management"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                    isActive ? "bg-white/20" : "hover:bg-white/10"
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
                   }`
                 }
               >
@@ -132,12 +124,20 @@ const DashboardLayout = () => {
           <NavLink
             to="/dashboard/profile"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${
-                isActive ? "bg-white/20" : "hover:bg-white/10"
+              `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
               }`
             }
           >
             <FaUser /> Profile
+          </NavLink>
+          <NavLink
+            to="/dashboard/funding"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all ${isActive ? "bg-white/20" : "hover:bg-white/10"
+              }`
+            }
+          >
+            💸 Funding
           </NavLink>
         </nav>
       </aside>

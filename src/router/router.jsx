@@ -95,10 +95,6 @@ const router = createBrowserRouter([
         element: <FundingPage />,
       },
       {
-        path: "funding/payment",
-        element: <FundPayment />,
-      },
-      {
         path: "all-users",
         element: <RoleRoute allowedRoles={["admin"]}><AllUsers /></RoleRoute>
       },

@@ -4,7 +4,7 @@ import useUserData from "../../../hooks/useUserData";
 import useAxios from "../../../hooks/useAxios";
 
 
-const FundPayment = () => {
+const FundPayment = ({ refetch }) => {
   const stripe = useStripe();
   const elements = useElements();
   const axios = useAxios();
@@ -53,6 +53,10 @@ const FundPayment = () => {
 
         await axios.post("/fundings", paymentData);
         setSuccess(true);
+
+        // ✅ Close the modal after successful payment
+        document.getElementById("fundModal").close();
+         refetch();
       }
     } catch (err) {
       console.error(err);
