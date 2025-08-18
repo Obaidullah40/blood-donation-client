@@ -1,4 +1,4 @@
-# 🩸 LifeFlow - Blood Donation Management Web App
+# 🩸 Blood Donation Management Web App
 
 ## 🔗 Live Site:  [https://blood-donation-91267.web.app](https://blood-donation-91267.web.app)
 
