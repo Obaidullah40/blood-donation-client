@@ -12,8 +12,6 @@ export default function ContactSection() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    
     Swal.fire({
       icon: "success",
       title: "Message Sent!",
@@ -23,15 +21,12 @@ export default function ContactSection() {
       timer: 3000,
       showConfirmButton: false,
     });
-
-    // Reset form
     setFormData({ name: "", email: "", message: "" });
   };
 
   return (
     <section id="contact" className="bg-base-200 py-16 px-4">
-      <div className="max-w-7xl mb-10 mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Left - Form */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
@@ -68,8 +63,6 @@ export default function ContactSection() {
             <button type="submit" className="btn btn-primary w-full">Send Message</button>
           </form>
         </motion.div>
-
-        {/* Right - Contact Info */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
@@ -78,7 +71,6 @@ export default function ContactSection() {
         >
           <h3 className="text-2xl font-semibold text-neutral">Get in Touch</h3>
           <p className="text-gray-600">Have any questions or suggestions? Reach out to us anytime.</p>
-
           <div className="flex items-start gap-4">
             <FaPhoneAlt className="text-xl text-primary mt-1" />
             <div>
@@ -86,7 +78,6 @@ export default function ContactSection() {
               <p>+880 1234-567890</p>
             </div>
           </div>
-
           <div className="flex items-start gap-4">
             <FaEnvelope className="text-xl text-primary mt-1" />
             <div>
@@ -94,7 +85,6 @@ export default function ContactSection() {
               <p>support@blooddonation.org</p>
             </div>
           </div>
-
           <div className="flex items-start gap-4">
             <FaMapMarkerAlt className="text-xl text-primary mt-1" />
             <div>
