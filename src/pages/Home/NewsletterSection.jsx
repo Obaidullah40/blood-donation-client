@@ -1,0 +1,59 @@
+import { useState } from "react";
+import Swal from "sweetalert2";
+import { motion } from "framer-motion";
+
+export default function NewsletterSection() {
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      icon: "success",
+      title: "Subscribed!",
+      text: "You’ll receive updates about blood donation events.",
+      toast: true,
+      position: "top-end",
+      timer: 3000,
+      showConfirmButton: false,
+    });
+    setEmail("");
+  };
+
+  return (
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <motion.h2
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-3xl font-extrabold text-center mb-6 text-gray-900"
+      >
+        Stay Updated
+      </motion.h2>
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-lg text-gray-600 text-center mb-8"
+      >
+        Subscribe to our newsletter for the latest blood donation events and updates.
+      </motion.p>
+      <motion.form
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-md mx-auto flex gap-4"
+      >
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+          className="input input-bordered flex-grow"
+          required
+        />
+        <button type="submit" className="btn btn-primary">Subscribe</button>
+      </motion.form>
+    </section>
+  );
+}
