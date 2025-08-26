@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { FaEllipsisV } from "react-icons/fa";
@@ -19,6 +18,7 @@ const AllUsers = () => {
   const [total, setTotal] = useState(0);
   const limit = 5;
 
+  // fetch users for page / filter
   const fetchUsers = async () => {
     const res = await axios.get(
       `/users?status=${statusFilter}&page=${page}&limit=${limit}`
@@ -31,13 +31,22 @@ const AllUsers = () => {
     fetchUsers();
   }, [statusFilter, page]);
 
+  // ✅ Optimistic Update (without refetching whole list)
   const handleUpdate = async (id, updates) => {
+    const prevUsers = [...users];
+
+    // optimistic update: update UI instantly
+    setUsers((prev) =>
+      prev.map((u) => (u._id === id ? { ...u, ...updates } : u))
+    );
+
     try {
       await axios.patch(`/users/${id}`, updates);
-      fetchUsers();
       Swal.fire("Success", "User updated", "success");
     } catch (err) {
       console.error(err);
+      // rollback if error
+      setUsers(prevUsers);
       Swal.fire("Error", "Could not update user", "error");
     }
   };
@@ -65,7 +74,9 @@ const AllUsers = () => {
               setPage(1);
             }}
             className={`px-4 py-2 rounded-md font-semibold ${
-              statusFilter === status ? "bg-rose-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-rose-400 hover:text-white"
+              statusFilter === status
+                ? "bg-rose-500 text-white"
+                : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-rose-400 hover:text-white"
             }`}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -124,28 +135,44 @@ const AllUsers = () => {
                     <ul className="dropdown-content menu shadow bg-white dark:bg-gray-800 rounded-box w-48 z-10 text-gray-800 dark:text-white">
                       {u.status === "active" && (
                         <li>
-                          <button onClick={() => handleUpdate(u._id, { status: "blocked" })}>
+                          <button
+                            onClick={() =>
+                              handleUpdate(u._id, { status: "blocked" })
+                            }
+                          >
                             Block
                           </button>
                         </li>
                       )}
                       {u.status === "blocked" && (
                         <li>
-                          <button onClick={() => handleUpdate(u._id, { status: "active" })}>
+                          <button
+                            onClick={() =>
+                              handleUpdate(u._id, { status: "active" })
+                            }
+                          >
                             Unblock
                           </button>
                         </li>
                       )}
                       {u.role !== "volunteer" && (
                         <li>
-                          <button onClick={() => handleUpdate(u._id, { role: "volunteer" })}>
+                          <button
+                            onClick={() =>
+                              handleUpdate(u._id, { role: "volunteer" })
+                            }
+                          >
                             Make Volunteer
                           </button>
                         </li>
                       )}
                       {u.role !== "admin" && (
                         <li>
-                          <button onClick={() => handleUpdate(u._id, { role: "admin" })}>
+                          <button
+                            onClick={() =>
+                              handleUpdate(u._id, { role: "admin" })
+                            }
+                          >
                             Make Admin
                           </button>
                         </li>
@@ -165,7 +192,9 @@ const AllUsers = () => {
           <motion.button
             key={i}
             className={`px-4 py-2 rounded-md font-semibold ${
-              page === i + 1 ? "bg-rose-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-rose-400 hover:text-white"
+              page === i + 1
+                ? "bg-rose-500 text-white"
+                : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-rose-400 hover:text-white"
             }`}
             onClick={() => setPage(i + 1)}
             initial={{ opacity: 0, scale: 0.95 }}

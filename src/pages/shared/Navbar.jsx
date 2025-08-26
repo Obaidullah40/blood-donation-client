@@ -63,9 +63,9 @@ const Navbar = () => {
             <NavLink
               to={item.to}
               className={({ isActive }) =>
-                `relative text-white/90 hover:text-white transition-colors duration-200 px-3 py-2 ${
+                `relative text-black/90 md:text-white/90 md:hover:text-white transition-colors duration-200 px-3 py-2 ${
                   isActive
-                    ? "font-semibold text-white after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-white after:transition-all"
+                    ? "font-semibold  text-black md:text-white after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-white after:transition-all"
                     : ""
                 }`
               }
