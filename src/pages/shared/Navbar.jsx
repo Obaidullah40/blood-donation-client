@@ -4,14 +4,15 @@ import useAuth from "../../hooks/useAuth";
 import logo from "../../assets/blood.webp";
 import { useState } from "react";
 import { FaSignOutAlt, FaTachometerAlt, FaBars, FaTimes } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion"; // Added Framer Motion
+import { motion, AnimatePresence } from "framer-motion"; 
 
-// Define nav items (Dashboard removed from main nav)
+
 const navItems = [
   { to: "/", label: "Home" },
   { to: "/donation-request", label: "Donation Requests" },
   { to: "/blogs", label: "Blog" },
   { to: "/search", label: "Search Donors", auth: true },
+  { to: "/about", label: "About", auth: true },
 ];
 
 // Reusable Button component with DaisyUI

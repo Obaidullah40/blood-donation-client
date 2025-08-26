@@ -25,6 +25,7 @@ import FundingPage from "../pages/Dashboard/Funding/FundingPage";
 import EditDonationRequest from "../pages/Dashboard/EditDonationRequest";
 import ForbiddenPage from "../pages/ForbiddenPage";
 import NotFound from "../pages/NotFound";
+import About from "../pages/About";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "/donation-request/:id",
         element: <PrivateRoute><DonationRequestDetails /></PrivateRoute>
+      },
+      {
+        path: "/about",
+        element:<About/>
       },
       {
         path: "/forbidden",

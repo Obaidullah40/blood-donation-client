@@ -1,27 +1,29 @@
 import { FaHandsHelping, FaTint, FaUsers } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
+import video1 from "../../assets/video.mp4"
+import MBD from "../../assets/Manage Blood Donations.jpg"
+import RBA from "../../assets/Role-BasedAccess.jpg"
 
 const features = [
   {
     id: 1,
     icon: <FaHandsHelping className="text-red-600 w-12 h-12" />,
     title: "Connect Donors & Recipients",
-    image: "https://images.unsplash.com/photo-1615461066159-fea09c7d9e29?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
     desc: "Easily find and connect donors with those in need of blood in your community.",
   },
   {
     id: 2,
     icon: <FaTint className="text-red-600 w-12 h-12" />,
     title: "Manage Blood Donations",
-    image: "https://images.unsplash.com/photo-1576765607924-84f7b72c7a16?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+    image: MBD,
     desc: "Create, track, and update blood donation requests with real-time status updates.",
   },
   {
     id: 3,
     icon: <FaUsers className="text-red-600 w-12 h-12" />,
     title: "Role-Based Access",
-    image: "https://images.unsplash.com/photo-1582719183514-2ffd9b4fb797?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+    image: RBA,
     desc: "Secure platform supporting admins, donors, and volunteers with custom permissions.",
   },
 ];
@@ -49,7 +51,18 @@ export default function FeaturedSection() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: id * 0.2 }}
           >
-            <img src={image} alt={title} className="w-full h-48 object-cover" />
+            {id === 1 ? (
+              <video
+                src={video1}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-48 object-cover"
+              />
+            ) : (
+              <img src={image} alt={title} className="w-full h-48 object-cover" />
+            )}
             <div className="p-6 flex flex-col flex-grow">
               <div className="flex items-center gap-3 mb-2">
                 {icon}

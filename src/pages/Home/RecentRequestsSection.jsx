@@ -1,63 +1,100 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import useAxios from "../../hooks/useAxios";
+import Loading from "../shared/Loading";
 
-const requests = [
-  {
-    id: 1,
-    title: "Urgent A+ Blood Needed",
-    image: "https://images.unsplash.com/photo-1576765607924-84f7b72c7a16?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-    desc: "Patient in critical condition requires A+ blood in Dhaka.",
-  },
-  {
-    id: 2,
-    title: "B- Blood for Surgery",
-    image: "https://images.unsplash.com/photo-1615461066159-fea09c7d9e29?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-    desc: "Help a child undergoing surgery by donating B- blood.",
-  },
-  {
-    id: 3,
-    title: "O+ Donors Needed",
-    image: "https://images.unsplash.com/photo-1582719183514-2ffd9b4fb797?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-    desc: "Multiple patients need O+ blood in Chittagong.",
-  },
-];
+// Framer Motion variants for animations
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+};
 
 export default function RecentRequestsSection() {
   const navigate = useNavigate();
+  const axios = useAxios();
+
+  const { data: requests = [], isLoading } = useQuery({
+    queryKey: ["recent-donation-requests"],
+    queryFn: async () => {
+      const res = await axios.get("/public/donation-requests?status=pending&limit=3");
+      return res.data.requests;
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white dark:bg-gray-800">
+        <div className="text-center">
+          <Loading />
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-base-200">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white dark:bg-gray-800">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-3xl font-extrabold text-center mb-12 text-gray-900"
+        className="text-3xl font-extrabold text-center mb-12 text-rose-500"
       >
         Recent Donation Requests
       </motion.h2>
-      <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {requests.map(({ id, title, image, desc }) => (
+
+      {/* Request Count */}
+      <p className="text-center text-gray-800 dark:text-white mb-6">
+        Showing {requests.length} recent {requests.length === 1 ? "request" : "requests"}
+      </p>
+
+      {requests.length === 0 && (
+        <p className="text-center text-gray-800 dark:text-white">No recent donation requests found.</p>
+      )}
+
+      <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {requests.map((req, index) => (
           <motion.div
-            key={id}
-            className="card bg-base-100 shadow-xl rounded-lg overflow-hidden h-[400px] flex flex-col"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: id * 0.2 }}
+            key={req._id}
+            className="bg-white dark:bg-gray-800 shadow rounded-lg p-4 space-y-2 border flex flex-col"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: index * 0.2 }}
           >
-            <img src={image} alt={title} className="w-full h-48 object-cover" />
-            <div className="p-6 flex flex-col flex-grow">
-              <h3 className="text-xl font-semibold text-red-700 mb-2">{title}</h3>
-              <p className="text-gray-600 flex-grow">{desc}</p>
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-semibold text-rose-500">{req.recipientName}</h3>
+              <span className="text-sm font-medium text-white bg-rose-500 px-2 py-1 rounded-md capitalize">
+                {req.status}
+              </span>
+            </div>
+            <p><strong>Location:</strong> {req.recipientDistrict}, {req.recipientUpazila}</p>
+            <p><strong>Blood Group:</strong> {req.bloodGroup}</p>
+            <p><strong>Date:</strong> {req.donationDate}</p>
+            <p><strong>Time:</strong> {req.donationTime}</p>
+            <div className="text-right mt-auto">
               <button
-                className="btn btn-outline btn-primary mt-4"
-                onClick={() => navigate("/donation-request")}
+                className="btn bg-rose-500 text-white hover:bg-rose-400 border-none rounded-md px-4 py-2 font-semibold"
+                onClick={() => navigate(`/donation-request/${req._id}`)}
               >
-                See More
+                View
               </button>
             </div>
           </motion.div>
         ))}
       </div>
+
+      {/* View All Button */}
+      {requests.length > 0 && (
+        <div className="text-center mt-8">
+          <button
+            className="btn bg-rose-500 text-white hover:bg-rose-400 border-none rounded-md px-6 py-3 font-semibold"
+            onClick={() => navigate("/donation-request")}
+          >
+            View All Requests
+          </button>
+        </div>
+      )}
     </section>
   );
 }
