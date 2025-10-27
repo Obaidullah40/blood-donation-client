@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
-// Framer Motion variants for animations
+// Framer Motion variants
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.95 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
@@ -10,7 +10,7 @@ const cardVariants = {
 
 export default function TestimonialsSection() {
   const navigate = useNavigate();
-  const [imageOpacity, setImageOpacity] = useState(1); // Default: fully visible
+  const [imageOpacity, setImageOpacity] = useState(1);
 
   const testimonials = [
     {
@@ -38,61 +38,60 @@ export default function TestimonialsSection() {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white dark:bg-gray-800">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-[#fff5f5] dark:bg-[#0f0f0f] transition-colors duration-500">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-3xl font-extrabold text-center mb-12 text-rose-500"
+        className="text-3xl font-extrabold text-center mb-12 text-gray-900 dark:text-rose-50"
       >
         What Our Users Say
       </motion.h2>
 
-      <motion.div
-        className="text-center mb-6"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+      {/* Toggle Button */}
+      <motion.div className="text-center mb-6">
         <button
-          className="btn bg-rose-500 text-white hover:bg-rose-400 border-none rounded-md px-4 py-2 font-semibold"
+          className="btn bg-rose-500 text-white hover:bg-rose-400 dark:bg-rose-500 dark:hover:bg-rose-400 border-none rounded-md px-4 py-2 font-semibold"
           onClick={toggleImageVisibility}
         >
-          {imageOpacity === 1 ? "Half Visible" : imageOpacity === 0.5 ? "Hide Images" : "Show Images"}
+          {imageOpacity === 1
+            ? "Half Visible"
+            : imageOpacity === 0.5
+            ? "Hide Images"
+            : "Show Images"}
         </button>
       </motion.div>
 
+      {/* Testimonials Grid */}
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {testimonials.map((testimonial, index) => (
+        {testimonials.map((t, index) => (
           <motion.div
             key={index}
-            className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-2 border flex flex-col text-center"
+            className="bg-white dark:bg-[#1a1a1a] shadow-md rounded-xl p-6 flex flex-col items-center text-center border border-rose-100 dark:border-rose-900/40 transition-all hover:shadow-rose-200 dark:hover:shadow-rose-800/30"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
             transition={{ delay: index * 0.2 }}
           >
             <img
-              src={testimonial.image}
-              alt={testimonial.title}
-              className="w-24 h-24 mx-auto rounded-full object-cover"
+              src={t.image}
+              alt={t.title}
+              className="w-24 h-24 mx-auto rounded-full object-cover mb-4"
               style={{ opacity: imageOpacity }}
             />
-            <h3 className="text-xl font-semibold text-rose-500">{testimonial.title}</h3>
-            <p className="text-gray-800 dark:text-white flex-grow">{testimonial.desc}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">— {testimonial.author}</p>
+            <h3 className="text-xl font-semibold text-rose-600 dark:text-rose-400 mb-2">
+              {t.title}
+            </h3>
+            <p className="text-gray-700 dark:text-gray-300 flex-grow mb-2">{t.desc}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">— {t.author}</p>
           </motion.div>
         ))}
       </div>
 
-      <motion.div
-        className="text-center mt-8"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-      >
+      {/* Call to Action */}
+      <motion.div className="text-center mt-8">
         <button
-          className="btn bg-rose-500 text-white hover:bg-rose-400 border-none rounded-md px-6 py-3 font-semibold"
+          className="btn bg-rose-500 text-white hover:bg-rose-400 dark:bg-rose-500 dark:hover:bg-rose-400 border-none rounded-md px-6 py-3 font-semibold"
           onClick={() => navigate("/register")}
         >
           Become a Donor

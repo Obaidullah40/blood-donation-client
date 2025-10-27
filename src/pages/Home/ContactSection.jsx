@@ -14,7 +14,7 @@ export default function ContactSection() {
     Swal.fire({
       icon: "success",
       title: "Message Sent!",
-      text: "We’ll get back to you soon.",
+      text: "We'll get back to you soon.",
       toast: true,
       position: "top-end",
       timer: 3000,
@@ -24,7 +24,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white dark:bg-gray-800">
+    <section id="contact" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-[#fff5f5] dark:bg-[#0f0f0f] transition-colors duration-500">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -37,7 +37,7 @@ export default function ContactSection() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-lg text-gray-800 dark:text-white text-center mb-8"
+        className="text-lg text-gray-800 dark:text-gray-300 text-center mb-8"
       >
         Have any questions or suggestions? Reach out to us anytime.
       </motion.p>
@@ -54,7 +54,7 @@ export default function ContactSection() {
               value={formData.name}
               onChange={handleChange}
               placeholder="Your Name"
-              className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-rose-500"
+              className="w-full px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-800 dark:text-gray-100 border border-rose-200 dark:border-rose-900 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors"
               required
             />
             <input
@@ -63,7 +63,7 @@ export default function ContactSection() {
               value={formData.email}
               onChange={handleChange}
               placeholder="Your Email"
-              className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-rose-500"
+              className="w-full px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-800 dark:text-gray-100 border border-rose-200 dark:border-rose-900 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors"
               required
             />
             <textarea
@@ -71,12 +71,12 @@ export default function ContactSection() {
               value={formData.message}
               onChange={handleChange}
               placeholder="Your Message"
-              className="textarea textarea-bordered w-full h-32 bg-white dark:bg-gray-800 text-gray-800 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-rose-500"
+              className="w-full px-4 py-3 rounded-lg h-32 bg-white dark:bg-[#1a1a1a] text-gray-800 dark:text-gray-100 border border-rose-200 dark:border-rose-900 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors resize-none"
               required
             ></textarea>
             <button
               type="submit"
-              className="btn bg-rose-500 text-white hover:bg-rose-400 border-none rounded-md px-6 py-3 font-semibold w-full"
+              className="w-full bg-rose-500 text-white hover:bg-rose-600 rounded-lg px-6 py-3 font-semibold transition-colors shadow-md hover:shadow-lg"
             >
               Send Message
             </button>
@@ -92,22 +92,22 @@ export default function ContactSection() {
           <div className="flex items-start gap-4">
             <span className="text-xl text-rose-500 mt-1">📞</span>
             <div>
-              <h4 className="font-semibold text-gray-800 dark:text-white">Phone</h4>
-              <p className="text-gray-800 dark:text-white">+880 1234-567890</p>
+              <h4 className="font-semibold text-gray-800 dark:text-gray-100">Phone</h4>
+              <p className="text-gray-700 dark:text-gray-300">+880 1234-567890</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
             <span className="text-xl text-rose-500 mt-1">✉️</span>
             <div>
-              <h4 className="font-semibold text-gray-800 dark:text-white">Email</h4>
-              <p className="text-gray-800 dark:text-white">support@blooddonation.org</p>
+              <h4 className="font-semibold text-gray-800 dark:text-gray-100">Email</h4>
+              <p className="text-gray-700 dark:text-gray-300">support@blooddonation.org</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
             <span className="text-xl text-rose-500 mt-1">📍</span>
             <div>
-              <h4 className="font-semibold text-gray-800 dark:text-white">Address</h4>
-              <p className="text-gray-800 dark:text-white">123 Red Crescent Street, Dhaka, Bangladesh</p>
+              <h4 className="font-semibold text-gray-800 dark:text-gray-100">Address</h4>
+              <p className="text-gray-700 dark:text-gray-300">123 Red Crescent Street, Dhaka, Bangladesh</p>
             </div>
           </div>
         </motion.div>

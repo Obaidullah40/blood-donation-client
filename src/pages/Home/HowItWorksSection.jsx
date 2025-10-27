@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 
@@ -35,7 +34,7 @@ export default function HowItWorksSection() {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white dark:bg-gray-800">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-[#fff5f5] dark:bg-[#0f0f0f] transition-colors duration-500">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -49,7 +48,7 @@ export default function HowItWorksSection() {
         {steps.map((step, index) => (
           <motion.div
             key={index}
-            className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-2 border flex flex-col text-center"
+            className="bg-white dark:bg-[#1a1a1a] shadow-md rounded-xl p-6 space-y-2 border border-rose-200 dark:border-rose-900 flex flex-col text-center hover:shadow-lg transition-all duration-300"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -57,7 +56,7 @@ export default function HowItWorksSection() {
           >
             <span className="text-4xl mb-2">{step.icon}</span>
             <h3 className="text-xl font-semibold text-rose-500">{step.title}</h3>
-            <p className="text-gray-800 dark:text-white flex-grow">{step.desc}</p>
+            <p className="text-gray-700 dark:text-gray-300 flex-grow">{step.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -69,7 +68,7 @@ export default function HowItWorksSection() {
         transition={{ duration: 0.6, delay: 0.8 }}
       >
         <button
-          className="btn bg-rose-500 text-white hover:bg-rose-400 border-none rounded-md px-6 py-3 font-semibold"
+          className="bg-rose-500 text-white hover:bg-rose-600 rounded-lg px-6 py-3 font-semibold transition-colors shadow-md hover:shadow-lg"
           onClick={() => navigate("/register")}
         >
           Get Started

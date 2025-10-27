@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import useAxios from "../hooks/useAxios";
 import districts from '../assets/districts.json';
 import upazilas from "../assets/upazilas.json";
@@ -55,87 +56,123 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-xl shadow-xl">
-      <h2 className="text-3xl font-bold text-center mb-6 text-red-600">🔍 Find Blood Donors</h2>
-
-      <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Blood Group */}
-        <div>
-          <label className="label">Blood Group</label>
-          <select
-            name="bloodGroup"
-            value={formData.bloodGroup}
-            onChange={handleChange}
-            className="select select-bordered w-full"
-            required
-          >
-            <option value="">Select Blood Group</option>
-            {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
-              <option key={bg} value={bg}>{bg}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* District */}
-        <div>
-          <label className="label">District</label>
-          <select
-            name="district"
-            value={formData.district}
-            onChange={handleChange}
-            className="select select-bordered w-full"
-            required
-          >
-            <option value="">Select District</option>
-            {districts.map((d) => (
-              <option key={d.id} value={d.name}>{d.name}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Upazila */}
-        <div>
-          <label className="label">Upazila</label>
-          <select
-            name="upazila"
-            value={formData.upazila}
-            onChange={handleChange}
-            className="select select-bordered w-full"
-            required
-          >
-            <option value="">Select Upazila</option>
-            {filteredUpazilas.map((u) => (
-              <option key={u.id} value={u.name}>{u.name}</option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          type="submit"
-          className="btn bg-gradient-to-r from-red-500 to-red-700 text-white mt-2 col-span-1 md:col-span-2"
+    <div className="min-h-screen bg-[#fff5f5] dark:bg-[#0f0f0f] transition-colors duration-500 py-16 px-4">
+      <div className="max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-white dark:bg-[#1a1a1a] p-8 rounded-xl shadow-lg border border-rose-200 dark:border-rose-900"
         >
-          Search
-        </button>
-      </form>
+          <h2 className="text-3xl font-extrabold text-center mb-8 text-rose-500">
+            🔍 Find Blood Donors
+          </h2>
 
-      {/* Results */}
-      <div className="mt-8">
-        {loading ? (
-          <p className="text-center text-gray-600">Searching...</p>
-        ) : donors.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {donors.map((donor) => (
-              <div key={donor._id} className="card bg-base-100 shadow-md p-5 rounded-lg">
-                <h3 className="text-xl font-bold text-red-600">{donor.name}</h3>
-                <p><span className="font-semibold">Email:</span> {donor.email}</p>
-                <p><span className="font-semibold">Blood Group:</span> {donor.bloodGroup}</p>
-                <p><span className="font-semibold">Location:</span> {donor.upazila}, {donor.district}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-gray-500">No donors found.</p>
-        )}
+          <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Blood Group */}
+            <div>
+              <label className="block text-sm font-medium text-gray-800 dark:text-gray-100 mb-2">
+                Blood Group
+              </label>
+              <select
+                name="bloodGroup"
+                value={formData.bloodGroup}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-800 dark:text-gray-100 border border-rose-200 dark:border-rose-900 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors"
+                required
+              >
+                <option value="">Select Blood Group</option>
+                {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
+                  <option key={bg} value={bg}>{bg}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* District */}
+            <div>
+              <label className="block text-sm font-medium text-gray-800 dark:text-gray-100 mb-2">
+                District
+              </label>
+              <select
+                name="district"
+                value={formData.district}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-800 dark:text-gray-100 border border-rose-200 dark:border-rose-900 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors"
+                required
+              >
+                <option value="">Select District</option>
+                {districts.map((d) => (
+                  <option key={d.id} value={d.name}>{d.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Upazila */}
+            <div>
+              <label className="block text-sm font-medium text-gray-800 dark:text-gray-100 mb-2">
+                Upazila
+              </label>
+              <select
+                name="upazila"
+                value={formData.upazila}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-800 dark:text-gray-100 border border-rose-200 dark:border-rose-900 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors"
+                required
+              >
+                <option value="">Select Upazila</option>
+                {filteredUpazilas.map((u) => (
+                  <option key={u.id} value={u.name}>{u.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              className="bg-rose-500 text-white hover:bg-rose-600 rounded-lg px-6 py-3 font-semibold shadow-md hover:shadow-lg transition-colors duration-200 md:col-span-2"
+            >
+              Search
+            </button>
+          </form>
+        </motion.div>
+
+        {/* Results */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-8"
+        >
+          {loading ? (
+            <p className="text-center text-gray-800 dark:text-gray-300 text-lg">Searching...</p>
+          ) : donors.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {donors.map((donor, index) => (
+                <motion.div
+                  key={donor._id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="bg-white dark:bg-[#1a1a1a] shadow-md rounded-xl p-6 border border-rose-200 dark:border-rose-900 hover:shadow-lg transition-all duration-300"
+                >
+                  <h3 className="text-xl font-bold text-rose-500 mb-3">{donor.name}</h3>
+                  <div className="space-y-2 text-gray-700 dark:text-gray-300">
+                    <p>
+                      <span className="font-semibold text-gray-800 dark:text-gray-100">Email:</span> {donor.email}
+                    </p>
+                    <p>
+                      <span className="font-semibold text-gray-800 dark:text-gray-100">Blood Group:</span> {donor.bloodGroup}
+                    </p>
+                    <p>
+                      <span className="font-semibold text-gray-800 dark:text-gray-100">Location:</span> {donor.upazila}, {donor.district}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-gray-700 dark:text-gray-300 text-lg">No donors found.</p>
+          )}
+        </motion.div>
       </div>
     </div>
   );
