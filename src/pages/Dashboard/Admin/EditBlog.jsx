@@ -82,13 +82,13 @@ const EditBlog = () => {
             <img
               src={existingImage}
               alt="Current thumbnail"
-              className="mt-2 h-32 rounded shadow"
+              className="mt-2 h-32 rounded shadow "
             />
           )}
         </div>
 
         {/* Content Editor */}
-        <JoditEditor value={content} onChange={(v) => setContent(v)} />
+        <JoditEditor className="text-black" value={content} onChange={(v) => setContent(v)} />
 
         <button className="btn btn-primary w-full mt-4">Update Blog</button>
       </form>

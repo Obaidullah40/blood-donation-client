@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import useAxios from '../../hooks/useAxios';
-import Swal from 'sweetalert2';
-import Loading from '../shared/Loading';
+import React, { useState, useEffect } from "react";
+import useAxios from "../../hooks/useAxios";
+import Swal from "sweetalert2";
+import Loading from "../shared/Loading";
 
 const UserProfile = () => {
   const axiosInstance = useAxios();
-
   const [profile, setProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
 
-  // Fetch user profile from DB
+  // Fetch user profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axiosInstance.get('/profile');
+        const res = await axiosInstance.get("/profile");
         setProfile(res.data);
         setFormData(res.data);
       } catch (err) {
@@ -25,9 +24,9 @@ const UserProfile = () => {
     fetchProfile();
   }, [axiosInstance]);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleUpdate = async () => {
@@ -44,68 +43,113 @@ const UserProfile = () => {
     }
   };
 
-  if (!profile) return <div className="text-center mt-8">
-    <Loading />
-  </div>;
+  if (!profile)
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loading />
+      </div>
+    );
 
   return (
-    <div className="max-w-xl mx-auto bg-white shadow-md p-6 rounded">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">My Profile</h2>
+    <div
+      className="max-w-3xl mx-auto my-10 bg-gradient-to-br from-white to-rose-50 
+                 dark:from-gray-900 dark:to-gray-800 shadow-lg rounded-2xl p-8"
+    >
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+        <h2 className="text-3xl font-bold text-rose-500 text-center sm:text-left">
+          My Profile
+        </h2>
         <button
-          className="btn btn-sm btn-primary"
-          onClick={() => isEditing ? handleUpdate() : setIsEditing(true)}
+          className={`btn ${
+            isEditing
+              ? "bg-green-500 hover:bg-green-400"
+              : "bg-rose-500 hover:bg-rose-400"
+          } text-white border-none px-5`}
+          onClick={() => (isEditing ? handleUpdate() : setIsEditing(true))}
         >
-          {isEditing ? "Save" : "Edit"}
+          {isEditing ? "Save Changes" : "Edit Profile"}
         </button>
       </div>
 
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Avatar */}
+      <div className="flex justify-center mb-6">
+        <img
+          src={
+            formData.photoURL ||
+            "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+          }
+          alt="User Avatar"
+          className="w-28 h-28 rounded-full border-4 border-rose-200 shadow-md object-cover"
+        />
+      </div>
+
+      {/* Form */}
+      <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Name */}
         <div>
-          <label className="label">Name</label>
+          <label className="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">
+            Name
+          </label>
           <input
             className="input input-bordered w-full"
             name="name"
-            value={formData.name || ''}
+            value={formData.name || ""}
             onChange={handleChange}
             disabled={!isEditing}
           />
         </div>
+
+        {/* Email */}
         <div>
-          <label className="label">Email</label>
+          <label className="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">
+            Email
+          </label>
           <input
             className="input input-bordered w-full"
             name="email"
-            value={formData.email || ''}
+            value={formData.email || ""}
             disabled
           />
         </div>
+
+        {/* District */}
         <div>
-          <label className="label">District</label>
+          <label className="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">
+            District
+          </label>
           <input
             className="input input-bordered w-full"
             name="district"
-            value={formData.district || ''}
+            value={formData.district || ""}
             onChange={handleChange}
             disabled={!isEditing}
           />
         </div>
+
+        {/* Upazila */}
         <div>
-          <label className="label">Upazila</label>
+          <label className="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">
+            Upazila
+          </label>
           <input
             className="input input-bordered w-full"
             name="upazila"
-            value={formData.upazila || ''}
+            value={formData.upazila || ""}
             onChange={handleChange}
             disabled={!isEditing}
           />
         </div>
+
+        {/* Blood Group */}
         <div>
-          <label className="label">Blood Group</label>
+          <label className="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">
+            Blood Group
+          </label>
           <select
             className="select select-bordered w-full"
             name="blood_group"
-            value={formData.blood_group || ''}
+            value={formData.blood_group || ""}
             onChange={handleChange}
             disabled={!isEditing}
           >
@@ -120,12 +164,16 @@ const UserProfile = () => {
             <option value="O-">O-</option>
           </select>
         </div>
+
+        {/* Avatar URL */}
         <div>
-          <label className="label">Avatar URL</label>
+          <label className="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">
+            Avatar URL
+          </label>
           <input
             className="input input-bordered w-full"
             name="photoURL"
-            value={formData.photoURL || ''}
+            value={formData.photoURL || ""}
             onChange={handleChange}
             disabled={!isEditing}
           />
